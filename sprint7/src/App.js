@@ -33,7 +33,7 @@ export default function App() {
   //Checkboxes presupuesto
   const [web, setWeb] = useState(false);
   const [seo, setSeo] = useState(false);
-  const [googleAdds, setGoogleAdds] = useState(false);
+  const [googleAds, setGoogleAds] = useState(false);
 
   //Inputs Web (Número de páginas e idiomas)
   let [pages, setPages] = useState(0);
@@ -42,7 +42,7 @@ export default function App() {
   //Handle Checks
   const handleWeb = () => setWeb(!web);
   const handleSeo = () => setSeo(!seo);
-  const handleGoogleAdds = () => setGoogleAdds(!googleAdds);
+  const handleGoogleAds = () => setGoogleAds(!googleAds);
 
   //Handle Inputs
   const handlePages = (event) => setPages(Number(event.target.value));
@@ -57,8 +57,8 @@ export default function App() {
     if(name === 'web' && !checked) setTotal(total-500);
     if(name === 'seo' && checked ) setTotal(total+300);
     if(name === 'seo' && !checked)  setTotal(total-300);
-    if(name === 'googleAdds' && checked) setTotal(total+200);
-    if(name === 'googleAdds' && !checked) setTotal(total-200);
+    if(name === 'googleAds' && checked) setTotal(total+200);
+    if(name === 'googleAds' && !checked) setTotal(total-200);
   }
   
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function App() {
 
       if(web) costChecks += 500;
       if(seo) costChecks += 300;
-      if(googleAdds) costChecks += 200;
+      if(googleAds) costChecks += 200;
 
       setTotal(costTotal+costChecks);
   }
@@ -95,7 +95,7 @@ export default function App() {
     <Form>
       <h3>Services </h3>
       <Checkbox 
-        label='Web deployment (500€)'
+        label='Web development (500€)'
         name='web' 
         check={web} 
         onChange={handleWeb}
@@ -122,17 +122,17 @@ export default function App() {
       </Panel>}
 
       <Checkbox 
-        label='Seo Analysis (300€)'
+        label='Seo consultancy (300€)'
         name='seo' 
         check={seo} 
         onChange={handleSeo} 
         onClick={totalChecks}
       /> 
       <Checkbox 
-        label='Google Adds action (200€)'
-        name='googleAdds' 
-        check={googleAdds} 
-        onChange={handleGoogleAdds} 
+        label='GoogleADS campaign (200€)'
+        name='googleAds' 
+        check={googleAds} 
+        onChange={handleGoogleAds} 
         onClick={totalChecks}
       />
       <p>Total: {total}</p>
