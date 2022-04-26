@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
+import { useLocalStorage } from './useLocalStorage';
 
 const Panel = styled.div`
   width: 100%;
@@ -28,7 +29,7 @@ const InputButtons = styled.div`
 `;
 
 export default function App() {
-  let [total, setTotal] = useState(0);
+  let [total, setTotal] = useLocalStorage(0, 0);
 
   //Checkboxes presupuesto
   const [web, setWeb] = useState(false);
@@ -36,8 +37,8 @@ export default function App() {
   const [googleAds, setGoogleAds] = useState(false);
 
   //Inputs Web (Número de páginas e idiomas)
-  let [pages, setPages] = useState(0);
-  let [language, setLanguage] = useState(0);
+  let [pages, setPages] = useState(1);
+  let [language, setLanguage] = useState(1);
 
   //Handle Checks
   const handleWeb = () => setWeb(!web);
@@ -53,12 +54,12 @@ export default function App() {
     let name = event.target.name;
     let checked = event.target.checked;
     
-    if(name === 'web' && checked) setTotal(total+500);
-    if(name === 'web' && !checked) setTotal(total-500);
-    if(name === 'seo' && checked ) setTotal(total+300);
-    if(name === 'seo' && !checked)  setTotal(total-300);
-    if(name === 'googleAds' && checked) setTotal(total+200);
-    if(name === 'googleAds' && !checked) setTotal(total-200);
+    if(name === 'web' && checked) setTotal(total + 500);
+    if(name === 'web' && !checked) setTotal(total - 500);
+    if(name === 'seo' && checked ) setTotal(total + 300);
+    if(name === 'seo' && !checked)  setTotal(total - 300);
+    if(name === 'googleAds' && checked) setTotal(total + 200);
+    if(name === 'googleAds' && !checked) setTotal(total - 200);
   }
   
   useEffect(() => {
@@ -66,7 +67,7 @@ export default function App() {
       let costTotal = 0;
       let costChecks = 0;
 
-      costTotal = (pages*language)*30;
+      costTotal = (pages * language) * 30;
 
       if(web) costChecks += 500;
       if(seo) costChecks += 300;
