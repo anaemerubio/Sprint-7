@@ -1,102 +1,67 @@
 import React, {useState, useEffect} from 'react';
-import styled from 'styled-components';
-import { useLocalStorage } from './useLocalStorage';
-
-const Panel = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 0.5rem;
-  gap: 1rem;
-  border: 1px solid #000000;
-  border-radius: 10px;
-`;
-
-const Form = styled.div`
-  width: 50%;
-  height: 50%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-`;
-
-const InputButtons = styled.div`
-  display: flex;
-`;
+import { Checkbox } from './components/Checkbox';
+import { Input } from './components/Input';
+import { Form, Panel, InputButtons } from './components/Style';
 
 export default function App() {
-  let [total, setTotal] = useLocalStorage(0, 0);
 
-  //Checkboxes presupuesto
   const [web, setWeb] = useState(false);
   const [seo, setSeo] = useState(false);
   const [googleAds, setGoogleAds] = useState(false);
 
-  //Inputs Web (Número de páginas e idiomas)
-  let [pages, setPages] = useState(1);
-  let [language, setLanguage] = useState(1);
+  let [paginas, setPaginas] = useState(0);
+  let [idiomas, setIdiomas] = useState(0);
 
-  //Handle Checks
+  let [total, setTotal] = useState(0);
+
   const handleWeb = () => setWeb(!web);
   const handleSeo = () => setSeo(!seo);
   const handleGoogleAds = () => setGoogleAds(!googleAds);
 
-  //Handle Inputs
-  const handlePages = (event) => setPages(Number(event.target.value));
-  const handleLanguage = (event) => setLanguage(Number(event.target.value));
+  const handlePaginas = (evt) => setPaginas(Number(evt.target.value));
+  const handleIdiomas = (evt) => setIdiomas(Number(evt.target.value));
 
-  //Sumar cuando esté el checkbox seleccionado
-  function totalChecks(event){
-    let name = event.target.name;
-    let checked = event.target.checked;
-    
-    if(name === 'web' && checked) setTotal(total + 500);
-    if(name === 'web' && !checked) setTotal(total - 500);
-    if(name === 'seo' && checked ) setTotal(total + 300);
-    if(name === 'seo' && !checked)  setTotal(total - 300);
-    if(name === 'googleAds' && checked) setTotal(total + 200);
-    if(name === 'googleAds' && !checked) setTotal(total - 200);
+  function totalChecks(evt){
+    let name = evt.target.name;
+    let chekced = evt.target.checked;
+    if(name === 'web' && chekced) setTotal(total+400);
+    if(name === 'web' && !chekced) setTotal(total-400);
+    if(name === 'seo' && chekced ) setTotal(total+300);
+    if(name === 'seo' && !chekced)  setTotal(total-300);
+    if(name === 'googleAds' && chekced) setTotal(total+200);
+    if(name === 'googleAds' && !chekced) setTotal(total-200);
   }
   
+  const sumarPages = () => setPaginas(++paginas)  
+  const restarPages = () => (!paginas) ? setPaginas(paginas) : setPaginas(--paginas); 
+  const sumarLanguages = () => setIdiomas(++idiomas);
+  const restarLanguages = () => (!idiomas) ? setIdiomas(idiomas) : setIdiomas(--idiomas);
+
+  useEffect(()=> {
+    if(web) {
+      setPaginas(1);
+      setIdiomas(1);
+    } else {
+      setPaginas(0);
+      setIdiomas(0);
+    }
+  },[web]);
+
   useEffect(() => {
-    const costWeb = () => {
-      let costTotal = 0;
-      let costChecks = 0;
+    total = 0;
+    let totalWeb = (paginas*idiomas)*30;
+    if(web) total += 400;
+    if(seo) total += 300;
+    if(googleAds) total += 200;
+    setTotal(total+totalWeb);
 
-      costTotal = (pages * language) * 30;
-
-      if(web) costChecks += 500;
-      if(seo) costChecks += 300;
-      if(googleAds) costChecks += 200;
-
-      setTotal(costTotal+costChecks);
-  }
-  if(web) costWeb();
-  }, [pages, language]);
-
-  //Sumar y restar inputs pages y language
-  const sumarPages = () => {
-    setPages(++pages);  
-  } 
-  const restarPages = () => {
-    (pages===0) ? setPages(pages) : setPages(--pages);
-  } 
-  const sumarLanguage = () => {
-    setLanguage(++language);
-  } 
-  const restarLanguage = () => {
-    (language===0) ? setLanguage(language) : setLanguage(--language);
-  } 
+  }, [paginas, idiomas]);
 
   return (
     <Form>
       <h3>Services </h3>
       <Checkbox 
-        label='Web development (500€)'
+        label='Web Development (500€)'
         name='web' 
         check={web} 
         onChange={handleWeb}
@@ -106,31 +71,37 @@ export default function App() {
       {web && 
       <Panel>
           
-      <InputButtons>
-        <label htmlFor='pages'>number of pages</label>
-        <button onClick={sumarPages}>+</button>
-        <Input id='pages' value={pages} onChange={handlePages}/>
-        <button onClick={restarPages}>-</button>  
-      </InputButtons>
+        <InputButtons>
+          <label htmlFor='paginas'>number of pages</label>
+          <button onClick={sumarPages}>+</button>
+          <Input 
+            id='paginas' 
+            value={paginas} 
+            onChange={handlePaginas}/>
+          <button onClick={restarPages}>-</button>  
+        </InputButtons>
 
-      <InputButtons>
-        <label htmlFor='language'>number of language</label>
-        <button onClick={sumarLanguage}>+</button>
-        <Input id='language'value={language} onChange={handleLanguage}/> 
-        <button onClick={restarLanguage}>-</button>
-      </InputButtons>
+        <InputButtons>
+          <label htmlFor='idiomas'>number of languages</label>
+          <button onClick={sumarLanguages}>+</button>
+          <Input 
+            id='idiomas'
+            value={idiomas} 
+            onChange={handleIdiomas}/> 
+          <button onClick={restarLanguages}>-</button>
+        </InputButtons>
 
       </Panel>}
 
       <Checkbox 
-        label='Seo consultancy (300€)'
+        label='Seo Consultancy (300€)'
         name='seo' 
         check={seo} 
         onChange={handleSeo} 
         onClick={totalChecks}
       /> 
       <Checkbox 
-        label='GoogleADS campaign (200€)'
+        label='GoogleADS Campaign (200€)'
         name='googleAds' 
         check={googleAds} 
         onChange={handleGoogleAds} 
@@ -140,20 +111,3 @@ export default function App() {
     </Form>
   );
 };
-
-const Checkbox = ({label, name, check, onChange, onClick}) => {
-  return (
-    <label>
-      <input type='checkbox' name={name} checked={check} onChange={onChange} onClick={onClick}/>
-      {label}
-    </label>
-  );
-}
-
-const Input = ({value, onChange}) => {
-  return (
-    <label>
-      <input  type='text' value={value} onChange={onChange}/>
-    </label>
-  );
-}
