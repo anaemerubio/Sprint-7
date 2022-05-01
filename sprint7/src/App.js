@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Checkbox } from './components/Checkbox';
-import { Input } from './components/Input';
-import { Form, Panel, InputButtons } from './components/Style';
+import { InputWithButton } from './components/InputWithButtons';
+import { Form, Panel } from './components/Style';
 
 export default function App() {
   const [web, setWeb] = useState(false);
@@ -18,7 +18,7 @@ export default function App() {
   const handleGoogleAds = () => setGoogleAds(!googleAds);
 
   const handlePages = (event) => setPages(Number(event.target.value));
-  const handlelanguages = (event) => setlanguages(Number(event.target.value));
+  const handleLanguages = (event) => setlanguages(Number(event.target.value));
 
   function totalChecks(event){
     let name = event.target.name;
@@ -69,27 +69,21 @@ export default function App() {
     
       {web && 
       <Panel>
-          
-        <InputButtons>
-          <label htmlFor='pages'>number of pages</label>
-          <button onClick={sumarPages}>+</button>
-          <Input 
-            id='pages' 
-            value={pages} 
-            onChange={handlePages}/>
-          <button onClick={restarPages}>-</button>  
-        </InputButtons>
-
-        <InputButtons>
-          <label htmlFor='languages'>number of languages</label>
-          <button onClick={sumarLanguages}>+</button>
-          <Input 
-            id='languages'
-            value={languages} 
-            onChange={handlelanguages}/> 
-          <button onClick={restarLanguages}>-</button>
-        </InputButtons>
-
+        <InputWithButton 
+          id='pages' 
+          value={pages} 
+          onClickSumar={sumarPages}
+          onClickRestar={restarPages}
+          onChange={handlePages}
+        />
+        <InputWithButton 
+          id='languages' 
+          value={languages} 
+          onClickSumar={sumarLanguages}
+          onClickRestar={restarLanguages}
+          onChange={handleLanguages}
+        />
+    
       </Panel>}
 
       <Checkbox 
@@ -106,6 +100,7 @@ export default function App() {
         onChange={handleGoogleAds} 
         onClick={totalChecks}
       />
+
       <p>Total: {total}</p>
     </Form>
   );
