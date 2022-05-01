@@ -1,4 +1,3 @@
-
 import { WrapperInputCheckbox } from './Style.js';
 
 export const Checkbox = ({label, id, check, onChange, onClick}) => {
@@ -6,7 +5,8 @@ export const Checkbox = ({label, id, check, onChange, onClick}) => {
     <WrapperInputCheckbox>
         <input 
           type='checkbox' 
-          id={id} name={id} 
+          id={id} 
+          name={id} 
           checked={check} 
           onChange={onChange} 
           onClick={onClick}
@@ -14,4 +14,4 @@ export const Checkbox = ({label, id, check, onChange, onClick}) => {
         <label htmlFor={id} > {label} </label>
     </WrapperInputCheckbox>
   );
- }
+}
