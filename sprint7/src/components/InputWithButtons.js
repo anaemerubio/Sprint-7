@@ -1,10 +1,10 @@
 import { WrapperInputText } from './Style';
 
-export const InputWithButton = ({id, value, onChange, onClickSuma, onClickResta}) => {
+export const InputWithButton = ({id, value, onChange, onClickAdd, onClickSubstract}) => {
   return (
       <WrapperInputText>
         <label htmlFor={id}> {id} </label>
-        <button onClick={onClickSuma}>+</button> 
+        <button onClick={onClickAdd}>+</button> 
         <input  
           type='text' 
           id={id} 
@@ -12,7 +12,7 @@ export const InputWithButton = ({id, value, onChange, onClickSuma, onClickResta}
           value={value} 
           onChange={onChange}
         />
-        <button onClick={onClickResta}>-</button>  
+        <button onClick={onClickSubstract}>-</button>  
       </WrapperInputText>
     );
 }
