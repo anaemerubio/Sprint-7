@@ -7,30 +7,25 @@ import { InputWithButton } from './InputWithButtons';
 export function ServicesForm() {
   let [total, setTotal] = useState(0);
 
-  //Checkbox
   const [web, setWeb] = useState(false);
   const [seo, setSeo] = useState(false);
   const [googleAdds, setGoogleAdds] = useState(false);
 
-  //Inputs text (Languages and Pages)
   let [pages, setPages] = useState(0);
   let [languages, setLanguages] = useState(0);
 
   let [btnLocalStorage, setBtnLocalStorage] = useState(false);
   const onClickLocalStorage = () => setBtnLocalStorage(!btnLocalStorage);
  
-  //Checkbox handlers
   function onChangeChecks (evt) {
     if(evt.target.id ==='web') setWeb(!web);
     if(evt.target.id ==='seo') setSeo(!seo);
     if(evt.target.id ==='googleAdds') setGoogleAdds(!googleAdds);
   }
 
-  //Inputs text handlers
   const handlePages = (evt) => setPages(parseInt(evt.target.value));
   const handleLanguages = (evt) => setLanguages(parseInt(evt.target.value));
 
-  //Total summation checkboxes
   function totalChecks(evt){
     let id = evt.target.id;
     let check = evt.target.checked;
@@ -42,13 +37,11 @@ export function ServicesForm() {
     if(id === 'googleAdds' && !check) setTotal(total-200);
   }
 
-  //Add and substract pages and languages 
   const addPages = () => setPages(++pages)  
   const substractPages = () => (!pages) ? setPages(pages) : setPages(--pages); 
   const addLanguages = () => setLanguages(++languages);
   const substractLanguages = () => (!languages) ? setLanguages(languages) : setLanguages(--languages);
 
-  //clean state pages and languages 
   useEffect(()=> {
     if(web && !localStorage.getItem(('form'))) {
       setPages(1);
@@ -59,7 +52,6 @@ export function ServicesForm() {
     }
   },[web]);
 
-  //Total summation fom inputs and checkbox
   useEffect(() => {
     total = 0;
     let totalweb = (pages*languages)*30;
@@ -69,7 +61,6 @@ export function ServicesForm() {
     setTotal(total+totalweb);
   }, [pages, languages]);
 
-  //local Storage
   useEffect(()=>{
     if(btnLocalStorage) {
       let formToStorage = {
@@ -96,7 +87,6 @@ export function ServicesForm() {
     }
   },[]);
 
-  // Return form
   return (
     <Form>
       <h3>Our Services</h3>
